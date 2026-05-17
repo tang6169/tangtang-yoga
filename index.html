@@ -487,6 +487,40 @@ section { padding: 80px 24px; position: relative; }
   .contact-info p { font-size: 0.9rem; }
 
   .footer { padding: 28px 16px; font-size: 0.75rem; }
+
+  .music-player { bottom: 16px; right: 16px; width: auto; }
+  .music-btn { width: 46px; height: 46px; }
+  .music-label { display: none; }
+}
+/* ===== Music Player ===== */
+.music-player {
+  position: fixed; bottom: 28px; right: 28px; z-index: 999;
+  display: flex; align-items: center; gap: 12px;
+}
+.music-btn {
+  width: 52px; height: 52px; border-radius: 50%;
+  background: var(--sage); color: white; border: none;
+  cursor: pointer; font-size: 1.3rem; display: flex;
+  align-items: center; justify-content: center;
+  transition: all 0.35s; box-shadow: 0 6px 24px rgba(107,138,107,0.3);
+  position: relative;
+}
+.music-btn:hover { background: var(--sage-dark); transform: scale(1.08); }
+.music-btn.playing { background: var(--earth); box-shadow: 0 6px 28px rgba(196,168,130,0.4); }
+.music-btn.playing::after {
+  content: ""; position: absolute; inset: -6px; border-radius: 50%;
+  border: 2px solid rgba(196,168,130,0.4);
+  animation: musicPulse 2s ease-in-out infinite;
+}
+@keyframes musicPulse {
+  0%, 100% { transform: scale(1); opacity: 0.6; }
+  50% { transform: scale(1.15); opacity: 0; }
+}
+.music-label {
+  font-size: 0.8rem; color: var(--text-light);
+  background: var(--white); padding: 8px 16px;
+  border-radius: 100px; box-shadow: 0 2px 12px rgba(61,50,38,0.08);
+  white-space: nowrap; pointer-events: none;
 }
 </style>
 </head>
@@ -847,6 +881,12 @@ section { padding: 80px 24px; position: relative; }
   <p style="margin-top: 6px;">守一间小馆，安一份初心 &nbsp;|&nbsp; 不推销 · 不办卡 · 不制造焦虑</p>
 </footer>
 
+<!-- Music Player -->
+<div class="music-player" id="musicPlayer">
+  <span class="music-label" id="musicLabel">🎵 轻音乐播放中</span>
+  <button class="music-btn" id="musicBtn" aria-label="播放背景音乐" title="点击播放瑜伽音乐">♪</button>
+</div>
+
 <script>
 (function() {
   var toggle = document.getElementById('navToggle');
@@ -889,6 +929,75 @@ section { padding: 80px 24px; position: relative; }
       btn.disabled = false;
       form.reset();
     }, 4000);
+  });
+
+  // Ambient Music Player
+  var audioCtx = null;
+  var oscillators = [];
+  var gains = [];
+  var isPlaying = false;
+  var musicBtn = document.getElementById('musicBtn');
+  var musicLabel = document.getElementById('musicLabel');
+
+  // Create soothing ambient drone using Web Audio API
+  function startAmbient() {
+    if (audioCtx) return;
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+    // Soothing frequencies (Solfeggio-inspired)
+    var freqs = [174, 285, 396, 417, 528];
+    var masterGain = audioCtx.createGain();
+    masterGain.gain.value = 0;
+    masterGain.connect(audioCtx.destination);
+
+    for (var i = 0; i < freqs.length; i++) {
+      var osc = audioCtx.createOscillator();
+      var gain = audioCtx.createGain();
+      osc.type = 'sine';
+      osc.frequency.value = freqs[i];
+      gain.gain.value = 0.03 + Math.random() * 0.02;
+      // Gentle frequency modulation
+      var lfo = audioCtx.createOscillator();
+      var lfoGain = audioCtx.createGain();
+      lfo.frequency.value = 0.1 + Math.random() * 0.3;
+      lfoGain.gain.value = 1.5;
+      lfo.connect(lfoGain);
+      lfoGain.connect(osc.frequency);
+      lfo.start();
+      osc.connect(gain);
+      gain.connect(masterGain);
+      osc.start();
+      oscillators.push({ osc: osc, lfo: lfo });
+      gains.push(gain);
+    }
+
+    // Fade in
+    masterGain.gain.setTargetAtTime(0.06, audioCtx.currentTime, 2);
+    return masterGain;
+  }
+
+  var masterGain = null;
+
+  musicBtn.addEventListener('click', function() {
+    if (!isPlaying) {
+      masterGain = startAmbient();
+      musicBtn.classList.add('playing');
+      musicBtn.innerHTML = '⏸';
+      musicLabel.style.display = 'block';
+      isPlaying = true;
+    } else {
+      if (masterGain) {
+        masterGain.gain.setTargetAtTime(0, audioCtx.currentTime, 1.5);
+        setTimeout(function() {
+          if (audioCtx) { audioCtx.close(); audioCtx = null; }
+          oscillators = []; gains = []; masterGain = null;
+        }, 2000);
+      }
+      musicBtn.classList.remove('playing');
+      musicBtn.innerHTML = '♪';
+      musicLabel.style.display = 'none';
+      isPlaying = false;
+    }
   });
 })();
 </script>
