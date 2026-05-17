@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="description" content="南阳卧龙区唐唐YOGA，一人一馆瑜伽工作室，只做小班和私教。扭转排毒、肩颈理疗、普拉提。不推销不办卡，精细化教学。">
+<title>唐唐YOGA · 南阳卧龙区一人一馆瑜伽工作室</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --cream: #FDF8F0;
+  --sage: #9BAF90;
+  --sage-dark: #6B8A6B;
+  --sage-light: #B8CFB3;
+  --earth: #C4A882;
+  --earth-light: #D9C4A5;
+  --stone: #E8E0D5;
+  --text: #3D3226;
+  --text-light: #6B5E4F;
+  --text-lighter: #9B8E7F;
+  --white: #FFFFFF;
+  --gold: #D4B886;
+  --gold-light: #E8D5B0;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: "PingFang SC", "Noto Sans SC", "Microsoft YaHei", -apple-system, system-ui, sans-serif;
+  color: var(--text);
+  background: var(--cream);
+  line-height: 1.8;
+  letter-spacing: 0.02em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+img { max-width: 100%; height: auto; display: block; }
+
+/* ===== Wave Dividers ===== */
+.wave-divider {
+  width: 100%; overflow: hidden; line-height: 0;
+  background: var(--cream);
+}
+.wave-divider svg { display: block; width: 100%; height: 60px; }
+.wave-divider.flip svg { transform: rotate(180deg); }
+.about + .wave-divider { background: var(--white); }
+.classes + .wave-divider { background: var(--cream); }
+
+/* ===== Navigation ===== */
+.nav {
+  position: fixed; top: 0; width: 100%; z-index: 1000;
+  background: rgba(253, 248, 240, 0.94);
+  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(139, 111, 71, 0.08);
+}
+.nav-inner {
+  max-width: 1200px; margin: 0 auto; padding: 0 24px;
+  display: flex; align-items: center; justify-content: space-between; height: 60px;
+}
+.nav-logo {
+  font-size: 1.25rem; font-weight: 700; color: var(--sage-dark);
+  text-decoration: none; letter-spacing: 0.04em; z-index: 1002;
+}
+.nav-links { display: flex; list-style: none; gap: 28px; }
+.nav-links a {
+  text-decoration: none; color: var(--text-light); font-size: 0.9rem;
+  transition: color 0.2s; padding: 8px 0;
+}
+.nav-links a:hover { color: var(--sage-dark); }
+
+.nav-toggle {
+  display: none; flex-direction: column; gap: 5px; cursor: pointer;
+  background: none; border: none; padding: 8px; z-index: 1002;
+}
+.nav-toggle span {
+  display: block; width: 22px; height: 2px; background: var(--text);
+  border-radius: 2px; transition: 0.3s;
+}
+.nav-toggle.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+.nav-toggle.active span:nth-child(2) { opacity: 0; }
+.nav-toggle.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+/* ===== Hero ===== */
+.hero {
+  min-height: 100vh;
+  display: flex; align-items: center;
+  padding: 80px 24px 60px;
+  background: linear-gradient(170deg, rgba(155,175,144,0.12) 0%, rgba(253,248,240,0.3) 35%, rgba(196,168,130,0.08) 100%);
+  position: relative; overflow: hidden;
+}
+
+/* Floating decorative blobs */
+.hero-blob {
+  position: absolute; border-radius: 50%; z-index: 0;
+  pointer-events: none;
+}
+.hero-blob-1 {
+  width: 500px; height: 500px; top: -15%; right: -10%;
+  background: radial-gradient(circle, rgba(155,175,144,0.13) 0%, transparent 70%);
+  animation: floatBlob 8s ease-in-out infinite;
+}
+.hero-blob-2 {
+  width: 350px; height: 350px; bottom: -8%; left: -5%;
+  background: radial-gradient(circle, rgba(196,168,130,0.12) 0%, transparent 70%);
+  animation: floatBlob 10s ease-in-out infinite reverse;
+}
+.hero-blob-3 {
+  width: 180px; height: 180px; top: 45%; left: 55%;
+  background: radial-gradient(circle, rgba(212,184,134,0.12) 0%, transparent 70%);
+  animation: floatBlob 6s ease-in-out infinite;
+}
+@keyframes floatBlob {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(20px, -20px) scale(1.05); }
+  66% { transform: translate(-10px, 15px) scale(0.95); }
+}
+
+.hero-inner {
+  position: relative; z-index: 1;
+  max-width: 1200px; margin: 0 auto; width: 100%;
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 48px; align-items: center;
+}
+
+.hero-tag {
+  display: inline-block; font-size: 0.8rem; color: var(--sage-dark);
+  letter-spacing: 0.15em; border: 1.5px solid rgba(155,175,144,0.5);
+  padding: 6px 18px; border-radius: 100px; margin-bottom: 20px;
+  background: rgba(155,175,144,0.06);
+}
+.hero h1 { font-size: 3rem; font-weight: 300; letter-spacing: 0.05em; margin-bottom: 18px; line-height: 1.3; }
+.hero h1 strong { font-weight: 700; color: var(--sage-dark); }
+.hero h1 .brand { font-weight: 700; color: var(--earth-dark); }
+.hero-subtitle { font-size: 1.05rem; color: var(--text-light); margin-bottom: 14px; line-height: 1.9; }
+
+.hero-badges { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 32px; }
+.hero-badge {
+  display: flex; align-items: center; gap: 7px;
+  font-size: 0.8rem; color: var(--text-light);
+  background: var(--white); padding: 7px 14px;
+  border-radius: 100px; border: 1px solid var(--stone);
+  box-shadow: 0 1px 4px rgba(61,50,38,0.04);
+}
+.hero-badge .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--sage); }
+.hero-btns { display: flex; gap: 14px; flex-wrap: wrap; }
+
+.hero-visual { position: relative; display: flex; justify-content: center; }
+.hero-img-box {
+  width: 100%;
+  max-width: 420px;
+  aspect-ratio: 4/5;
+  background: url('images/hero-photo.webp') center/cover no-repeat;
+  border-radius: 28px;
+  box-shadow: 0 24px 60px rgba(61,50,38,0.12);
+  position: relative;
+}
+.hero-img-box::after {
+  content: "";
+  position: absolute; inset: 0; border-radius: 28px;
+  border: 1px solid rgba(155,175,144,0.2);
+  pointer-events: none;
+}
+.hero-decor-ring {
+  position: absolute;
+  bottom: -20px; left: -20px;
+  width: 90px; height: 90px;
+  border-radius: 50%;
+  border: 2px dashed rgba(196,168,130,0.3);
+  z-index: -1;
+  animation: spinSlow 30s linear infinite;
+}
+@keyframes spinSlow { to { transform: rotate(360deg); } }
+.hero-decor-dots {
+  position: absolute; top: -18px; right: -18px;
+  width: 70px; height: 70px;
+  background: radial-gradient(circle, rgba(155,175,144,0.5) 2px, transparent 2px);
+  background-size: 14px 14px;
+  z-index: -1;
+}
+
+/* Scroll indicator */
+.scroll-indicator {
+  position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 8px; z-index: 1;
+}
+.scroll-mouse {
+  width: 20px; height: 32px; border-radius: 10px;
+  border: 2px solid rgba(107,138,107,0.35); position: relative;
+}
+.scroll-dot {
+  width: 3px; height: 7px; background: var(--sage);
+  border-radius: 2px; position: absolute; top: 6px; left: 50%;
+  transform: translateX(-50%);
+  animation: scrollDot 2s ease-in-out infinite;
+}
+@keyframes scrollDot {
+  0%, 100% { top: 6px; opacity: 1; }
+  50% { top: 18px; opacity: 0.3; }
+}
+.scroll-text { font-size: 0.65rem; color: rgba(107,138,107,0.45); letter-spacing: 0.12em; }
+
+/* ===== Buttons ===== */
+.btn-primary, .btn-outline {
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 14px 34px; border-radius: 100px;
+  font-size: 0.9rem; text-decoration: none; letter-spacing: 0.04em;
+  transition: all 0.3s; cursor: pointer; border: none;
+  min-height: 48px;
+}
+.btn-primary { background: var(--sage); color: white; }
+.btn-primary:hover { background: var(--sage-dark); transform: translateY(-2px); box-shadow: 0 10px 28px rgba(107,138,107,0.28); }
+.btn-outline { background: transparent; color: var(--sage-dark); border: 1.5px solid var(--sage); }
+.btn-outline:hover { background: rgba(155,175,144,0.08); transform: translateY(-2px); }
+
+/* ===== Sections ===== */
+section { padding: 80px 24px; position: relative; }
+.section-inner { max-width: 1100px; margin: 0 auto; }
+.section-header { text-align: center; margin-bottom: 48px; }
+.section-tag {
+  display: inline-block; font-size: 0.75rem; color: var(--sage-dark);
+  letter-spacing: 0.15em; margin-bottom: 10px;
+}
+.section-title { font-size: 2rem; font-weight: 300; margin-bottom: 10px; letter-spacing: 0.04em; }
+.section-line { width: 44px; height: 2px; background: var(--gold); margin: 0 auto; }
+.section-subtitle { color: var(--text-light); margin-top: 14px; font-size: 0.95rem; max-width: 480px; margin-left: auto; margin-right: auto; }
+
+/* ===== About ===== */
+.about { background: var(--white); }
+.about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 52px; align-items: center; }
+.about-text p { color: var(--text-light); margin-bottom: 18px; font-size: 1rem; }
+.about-photo-box {
+  width: 100%; aspect-ratio: 1/1; max-height: 420px;
+  background: url('images/about-photo.webp') center/cover no-repeat;
+  border-radius: 22px; position: relative;
+  box-shadow: 0 16px 48px rgba(61,50,38,0.08);
+}
+.about-photo-box::after {
+  content: ""; position: absolute; inset: 0; border-radius: 22px;
+  border: 1px solid rgba(196,168,130,0.18); pointer-events: none;
+}
+.about-photo-decor {
+  position: absolute; bottom: -14px; right: -14px;
+  width: 72px; height: 72px; border-radius: 50%;
+  background: rgba(107,138,107,0.1); z-index: -1;
+}
+.about-highlights {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 18px; margin-top: 44px;
+}
+.highlight-card {
+  background: var(--cream); padding: 26px 22px;
+  border-radius: 14px; text-align: center;
+  border: 1px solid rgba(232,224,213,0.6);
+  transition: transform 0.2s;
+}
+.highlight-card:hover { transform: translateY(-3px); }
+.highlight-icon { font-size: 1.8rem; margin-bottom: 10px; }
+.highlight-card h4 { font-size: 0.95rem; font-weight: 600; margin-bottom: 6px; }
+.highlight-card p { font-size: 0.85rem; color: var(--text-light); margin: 0; }
+
+/* ===== Classes ===== */
+.classes { background: var(--cream); }
+.class-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+}
+.class-card {
+  background: var(--white); border-radius: 18px; padding: 36px 28px;
+  border: 1px solid var(--stone); transition: all 0.35s;
+  display: flex; flex-direction: column;
+  box-shadow: 0 2px 12px rgba(61,50,38,0.03);
+}
+.class-card:hover { transform: translateY(-5px); box-shadow: 0 18px 48px rgba(61,50,38,0.1); border-color: var(--sage-light); }
+.class-card h3 { font-size: 1.2rem; font-weight: 600; margin-bottom: 8px; }
+.class-card .duration {
+  display: inline-block; font-size: 0.8rem; color: var(--sage-dark);
+  background: rgba(155,175,144,0.12); padding: 4px 14px;
+  border-radius: 100px; margin-bottom: 14px; align-self: flex-start;
+}
+.class-card p { color: var(--text-light); font-size: 0.9rem; line-height: 1.7; flex: 1; }
+.class-card .tags { margin-top: 16px; display: flex; flex-wrap: wrap; gap: 8px; }
+.tag { font-size: 0.75rem; color: var(--earth-dark); background: rgba(196,168,130,0.15); padding: 3px 12px; border-radius: 100px; }
+
+/* ===== Gallery ===== */
+.gallery { background: var(--white); }
+.gallery-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.gallery-item {
+  aspect-ratio: 1/1; border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: all 0.35s;
+  position: relative; overflow: hidden;
+  box-shadow: 0 4px 16px rgba(61,50,38,0.06);
+}
+.gallery-item:nth-child(1) { background: url('images/gallery-1.webp') center/cover no-repeat; }
+.gallery-item:nth-child(2) { background: url('images/gallery-2.webp') center/cover no-repeat; }
+.gallery-item:nth-child(3) { background: url('images/gallery-3.webp') center/cover no-repeat; }
+.gallery-item:nth-child(4) { background: url('images/gallery-4.webp') center/cover no-repeat; }
+.gallery-item:hover { transform: scale(1.04); box-shadow: 0 12px 36px rgba(61,50,38,0.15); }
+
+/* ===== Videos ===== */
+.videos { background: var(--cream); }
+.video-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 22px; }
+.video-card {
+  background: var(--white); border-radius: 16px; overflow: hidden;
+  border: 1px solid var(--stone); transition: all 0.3s;
+  text-decoration: none; display: block; box-shadow: 0 2px 12px rgba(61,50,38,0.03);
+}
+.video-card:hover { transform: translateY(-5px); box-shadow: 0 14px 40px rgba(61,50,38,0.12); border-color: var(--sage-light); }
+.video-thumb { width: 100%; aspect-ratio: 9/16; max-height: 300px; object-fit: cover; display: block; }
+.video-info { padding: 18px; }
+.video-info h4 { font-size: 0.95rem; font-weight: 600; color: var(--text); margin-bottom: 5px; }
+.video-info .vid-duration {
+  font-size: 0.75rem; color: var(--sage-dark);
+  background: rgba(155,175,144,0.1);
+  display: inline-block; padding: 3px 10px; border-radius: 100px;
+}
+.video-info p { font-size: 0.8rem; color: var(--text-light); margin-top: 6px; line-height: 1.5; }
+.video-play {
+  display: inline-flex; align-items: center; gap: 5px;
+  margin-top: 10px; font-size: 0.8rem; color: var(--sage-dark); font-weight: 500;
+}
+
+/* ===== Philosophy ===== */
+.philosophy { background: var(--cream); }
+.philosophy-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 18px;
+}
+.phil-item {
+  display: flex; align-items: flex-start; gap: 14px;
+  padding: 22px 18px; background: var(--white);
+  border-radius: 14px; border: 1px solid var(--stone);
+  transition: transform 0.2s;
+}
+.phil-item:hover { transform: translateY(-2px); border-color: var(--sage-light); }
+.phil-num {
+  flex-shrink: 0; width: 38px; height: 38px;
+  border-radius: 50%; background: var(--sage);
+  color: white; display: flex; align-items: center;
+  justify-content: center; font-size: 0.8rem; font-weight: 600;
+}
+.phil-text h4 { font-size: 1rem; font-weight: 600; margin-bottom: 3px; }
+.phil-text p { font-size: 0.85rem; color: var(--text-light); }
+
+.philosophy-quote {
+  text-align: center; margin-top: 44px; padding: 40px;
+  background: linear-gradient(135deg, rgba(155,175,144,0.06) 0%, rgba(196,168,130,0.06) 100%);
+  border-radius: 18px;
+}
+.philosophy-quote blockquote { font-size: 1.15rem; font-style: italic; line-height: 2; }
+
+/* ===== Music ===== */
+.music { background: var(--white); }
+.music-list { display: flex; flex-direction: column; gap: 14px; max-width: 650px; margin: 0 auto; }
+.music-item {
+  display: flex; align-items: center; gap: 16px;
+  padding: 18px 22px; background: var(--cream);
+  border-radius: 14px; border: 1px solid var(--stone);
+  transition: all 0.2s; cursor: pointer;
+}
+.music-item:hover { border-color: var(--sage-light); background: rgba(155,175,144,0.04); transform: translateX(4px); }
+.music-num {
+  flex-shrink: 0; width: 40px; height: 40px;
+  border-radius: 50%; background: var(--sage);
+  color: white; display: flex; align-items: center;
+  justify-content: center; font-size: 1rem;
+}
+.music-info { flex: 1; min-width: 0; }
+.music-info .song-name { font-weight: 600; font-size: 0.95rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.music-info .song-artist { font-size: 0.8rem; color: var(--text-light); margin-top: 1px; }
+.music-tag {
+  font-size: 0.7rem; color: var(--earth-dark);
+  background: rgba(196,168,130,0.15);
+  padding: 3px 10px; border-radius: 100px; flex-shrink: 0;
+}
+.music-note { text-align: center; color: var(--text-light); font-size: 0.85rem; margin-top: 24px; }
+
+/* ===== Contact ===== */
+.contact { background: var(--cream); }
+.contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 44px; align-items: start; }
+.contact-info h3 { font-size: 1.3rem; font-weight: 600; margin-bottom: 18px; }
+.contact-info p { color: var(--text-light); margin-bottom: 12px; display: flex; align-items: center; gap: 10px; font-size: 0.95rem; }
+.contact-form {
+  background: var(--white); padding: 34px;
+  border-radius: 18px; border: 1px solid var(--stone);
+  box-shadow: 0 4px 20px rgba(61,50,38,0.04);
+}
+.form-group { margin-bottom: 18px; }
+.form-group label { display: block; font-size: 0.85rem; font-weight: 500; margin-bottom: 5px; }
+.form-group input, .form-group select, .form-group textarea {
+  width: 100%; padding: 12px 15px; border: 1px solid var(--stone);
+  border-radius: 10px; font-size: 0.9rem; font-family: inherit;
+  background: var(--cream); color: var(--text); transition: border-color 0.2s;
+  -webkit-appearance: none;
+}
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: var(--sage); }
+.form-group textarea { resize: vertical; min-height: 100px; }
+.form-submit {
+  width: 100%; padding: 14px; background: var(--sage);
+  color: white; border: none; border-radius: 100px;
+  font-size: 0.95rem; cursor: pointer; letter-spacing: 0.04em;
+  transition: all 0.3s; min-height: 48px;
+}
+.form-submit:hover { background: var(--sage-dark); }
+.form-note { text-align: center; font-size: 0.8rem; color: var(--text-light); margin-top: 12px; }
+.free-trial {
+  display: inline-block; background: rgba(155,175,144,0.12);
+  color: var(--sage-dark); padding: 7px 18px;
+  border-radius: 100px; font-size: 0.85rem; margin-bottom: 18px;
+  font-weight: 500;
+}
+
+/* ===== Footer ===== */
+.footer { background: var(--text); color: rgba(255,255,255,0.7); text-align: center; padding: 36px 24px; font-size: 0.8rem; }
+.footer a { color: var(--gold); text-decoration: none; }
+
+/* ===== Responsive: Tablet ===== */
+@media (max-width: 900px) {
+  .hero-inner { grid-template-columns: 1fr; gap: 36px; text-align: center; }
+  .hero-badges { justify-content: center; }
+  .hero-btns { justify-content: center; }
+  .hero h1 { font-size: 2.2rem; }
+  .hero-visual { max-width: 320px; margin: 0 auto; }
+  .hero-decor-ring, .hero-decor-dots { display: none; }
+  .scroll-indicator { display: none; }
+
+  .about-grid { grid-template-columns: 1fr; gap: 36px; }
+  .about-photo-box { max-width: 340px; margin: 0 auto; max-height: 340px; }
+
+  .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+  .video-grid { grid-template-columns: 1fr; max-width: 400px; margin: 0 auto; }
+  .contact-grid { grid-template-columns: 1fr; }
+}
+
+/* ===== Responsive: Phone ===== */
+@media (max-width: 640px) {
+  .nav-inner { height: 54px; padding: 0 16px; }
+  .nav-logo { font-size: 1.1rem; }
+
+  .nav-links {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+    background: rgba(253, 248, 240, 0.98);
+    backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    flex-direction: column; align-items: center; justify-content: center;
+    gap: 28px;
+    transform: translateY(-100%); opacity: 0;
+    pointer-events: none; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .nav-links.active { transform: translateY(0); opacity: 1; pointer-events: auto; }
+  .nav-links a { font-size: 1.15rem; }
+  .nav-toggle { display: flex; }
+
+  section { padding: 56px 16px; }
+  .section-title { font-size: 1.6rem; }
+  .section-header { margin-bottom: 36px; }
+
+  .hero { padding-top: 72px; min-height: auto; padding-bottom: 48px; }
+  .hero h1 { font-size: 1.8rem; }
+  .hero-subtitle { font-size: 0.95rem; }
+  .hero-badge { font-size: 0.75rem; padding: 6px 12px; }
+  .hero-img-box { max-width: 280px; border-radius: 22px; }
+
+  .about-highlights { grid-template-columns: 1fr 1fr; gap: 12px; }
+  .highlight-card { padding: 20px 14px; }
+  .highlight-icon { font-size: 1.5rem; }
+
+  .class-grid { grid-template-columns: 1fr; gap: 16px; }
+  .class-card { padding: 28px 22px; }
+
+  .gallery-grid { gap: 10px; }
+  .gallery-item { border-radius: 10px; }
+
+  .philosophy-grid { grid-template-columns: 1fr; gap: 12px; }
+  .philosophy-quote { padding: 28px 20px; }
+  .philosophy-quote blockquote { font-size: 1rem; }
+
+  .music-item { padding: 14px 16px; gap: 12px; }
+  .music-num { width: 34px; height: 34px; font-size: 0.9rem; }
+
+  .contact-form { padding: 24px 18px; }
+  .contact-info p { font-size: 0.9rem; }
+
+  .footer { padding: 28px 16px; font-size: 0.75rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- ===== Navigation ===== -->
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="#home" class="nav-logo">唐唐YOGA</a>
+    <button class="nav-toggle" id="navToggle" aria-label="菜单">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#home">首页</a></li>
+      <li><a href="#about">关于</a></li>
+      <li><a href="#classes">课程</a></li>
+      <li><a href="#gallery">日常</a></li>
+      <li><a href="#videos">视频</a></li>
+      <li><a href="#philosophy">理念</a></li>
+      <li><a href="#music">音乐</a></li>
+      <li><a href="#contact">预约</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ===== Hero ===== -->
+<section class="hero" id="home">
+  <div class="hero-blob hero-blob-1"></div>
+  <div class="hero-blob hero-blob-2"></div>
+  <div class="hero-blob hero-blob-3"></div>
+  <div class="hero-inner">
+    <div class="hero-text">
+      <span class="hero-tag">南阳 · 卧龙区</span>
+      <h1><span class="brand">唐唐YOGA</span><br>一方小馆，<strong>安住身心</strong></h1>
+      <p class="hero-subtitle">
+        一人一馆 · 只做小班和私教<br>
+        用精细教学和真诚陪伴<br>
+        守护你的每一次呼吸与伸展
+      </p>
+      <div class="hero-badges">
+        <div class="hero-badge"><span class="dot"></span>不推销、不办卡</div>
+        <div class="hero-badge"><span class="dot"></span>仅限小班 & 私教</div>
+        <div class="hero-badge"><span class="dot"></span>精细化教学</div>
+      </div>
+      <div class="hero-btns">
+        <a href="#classes" class="btn-primary">了解课程</a>
+        <a href="#contact" class="btn-outline">预约免费体验</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-img-box"></div>
+      <div class="hero-decor-ring"></div>
+      <div class="hero-decor-dots"></div>
+    </div>
+  </div>
+  <div class="scroll-indicator">
+    <div class="scroll-mouse"><div class="scroll-dot"></div></div>
+    <span class="scroll-text">向下探索</span>
+  </div>
+</section>
+
+<!-- ===== About ===== -->
+<section class="about" id="about">
+  <div class="section-inner">
+    <div class="section-header">
+      <span class="section-tag">ABOUT</span>
+      <h2 class="section-title">关于唐唐</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="about-grid">
+      <div class="about-photo-box"><div class="about-photo-decor"></div></div>
+      <div class="about-text">
+        <p>
+          开了一间属于自己的一人一馆。不大，不喧嚣，也不做流水线套路。每天早早到店打扫收拾，每个角落都擦到位，器械垫子都整理好。不求多豪华，只求干净舒服，静静等着小姐妹们如约而至✨
+        </p>
+        <p>
+          这辈子只会专心上课，不会玩销售套路。始终觉得，<strong>运动是治愈，不是压力</strong>；体态是慢慢养，不是急于求成。认真做好专业，真的会被看见。
+        </p>
+        <p>
+          不靠套路留客，只靠专业和真诚。三观同频就慢慢相伴修行，不合缘也互不打扰。只等懂生活、爱自己的同频姐妹慢慢相遇。
+        </p>
+      </div>
+    </div>
+    <div class="about-highlights">
+      <div class="highlight-card">
+        <div class="highlight-icon">🧘</div>
+        <h4>只做小班与私教</h4>
+        <p>专注精细化教学，抠动作、调体态、做修复</p>
+      </div>
+      <div class="highlight-card">
+        <div class="highlight-icon">🤝</div>
+        <h4>不推销不办卡</h4>
+        <p>不靠套路留客，只靠专业和真诚</p>
+      </div>
+      <div class="highlight-card">
+        <div class="highlight-icon">🏠</div>
+        <h4>南阳市卧龙区</h4>
+        <p>一人一馆专属小天地，安静不被打扰</p>
+      </div>
+      <div class="highlight-card">
+        <div class="highlight-icon">💚</div>
+        <h4>免费体验课</h4>
+        <p>首次到店免费体验，合适再续</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Classes ===== -->
+<section class="classes" id="classes">
+  <div class="section-inner">
+    <div class="section-header">
+      <span class="section-tag">CLASSES</span>
+      <h2 class="section-title">课程介绍</h2>
+      <div class="section-line"></div>
+      <p class="section-subtitle">每节课专注细节，认真抠动作、调体态、做修复</p>
+    </div>
+    <div class="class-grid">
+      <div class="class-card">
+        <h3>🧘 私教一对一</h3>
+        <span class="duration">按需定制</span>
+        <p>专属一对一指导，根据身体状况和目标量身定制练习方案。适合零基础入门、产后修复、体态矫正。</p>
+        <div class="tags">
+          <span class="tag">量身定制</span><span class="tag">精准指导</span><span class="tag">效果优先</span>
+        </div>
+      </div>
+      <div class="class-card">
+        <h3>👥 小班团课</h3>
+        <span class="duration">60 分钟</span>
+        <p>3-6 人精品小班，保证每个人都能被关注和指导。与同频姐妹一起自律、一起优雅。</p>
+        <div class="tags">
+          <span class="tag">小班制</span><span class="tag">互动陪伴</span><span class="tag">固定时间</span>
+        </div>
+      </div>
+      <div class="class-card">
+        <h3>🌀 扭转排毒</h3>
+        <span class="duration">60 分钟</span>
+        <p>通过扭转体式刺激腹部器官，促进消化和排毒。改善便秘腹胀，让身心轻盈起来。</p>
+        <div class="tags">
+          <span class="tag">排毒养生</span><span class="tag">核心激活</span><span class="tag">消化改善</span>
+        </div>
+      </div>
+      <div class="class-card">
+        <h3>💆 肩颈理疗</h3>
+        <span class="duration">60 分钟</span>
+        <p>针对久坐低头族的肩颈不适，放松肩颈肌肉群，改善圆肩驼背，缓解头痛疲劳。</p>
+        <div class="tags">
+          <span class="tag">体态矫正</span><span class="tag">疼痛缓解</span><span class="tag">办公族必备</span>
+        </div>
+      </div>
+      <div class="class-card">
+        <h3>🦴 普拉提</h3>
+        <span class="duration">60 分钟</span>
+        <p>专注核心力量和身体控制，结合器械训练，建立稳定核心，改善身体排列和运动模式。</p>
+        <div class="tags">
+          <span class="tag">核心训练</span><span class="tag">器械辅助</span><span class="tag">塑形增肌</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Gallery ===== -->
+<section class="gallery" id="gallery">
+  <div class="section-inner">
+    <div class="section-header">
+      <span class="section-tag">GALLERY</span>
+      <h2 class="section-title">日常记录</h2>
+      <div class="section-line"></div>
+      <p class="section-subtitle">记录馆里的点滴，和姐妹们一起自律、一起优雅</p>
+    </div>
+    <div class="gallery-grid">
+      <div class="gallery-item"></div>
+      <div class="gallery-item"></div>
+      <div class="gallery-item"></div>
+      <div class="gallery-item"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Videos ===== -->
+<section class="videos" id="videos">
+  <div class="section-inner">
+    <div class="section-header">
+      <span class="section-tag">VIDEOS</span>
+      <h2 class="section-title">视频分享</h2>
+      <div class="section-line"></div>
+      <p class="section-subtitle">记录瑜伽教学日常，扭转排毒、肩颈理疗课程参考</p>
+    </div>
+    <div class="video-grid">
+      <a href="https://v.douyin.com/429i6jDe0sg/" target="_blank" rel="noopener" class="video-card">
+        <img src="images/hero-photo.webp" alt="一人一馆日常" class="video-thumb" loading="lazy">
+        <div class="video-info">
+          <h4>一人一馆 · 专属小天地</h4>
+          <span class="vid-duration">日常记录</span>
+          <p>抛开琐碎，只留呼吸和拉伸，一起自律一起优雅</p>
+          <span class="video-play">▶ 在抖音观看</span>
+        </div>
+      </a>
+      <a href="https://v.douyin.com/vi95skCtaA0/" target="_blank" rel="noopener" class="video-card">
+        <img src="images/gallery-2.webp" alt="扭转排毒课程" class="video-thumb" loading="lazy">
+        <div class="video-info">
+          <h4>扭转排毒 60分钟</h4>
+          <span class="vid-duration">课程编排</span>
+          <p>60分钟扭转排毒课程编排思路参考</p>
+          <span class="video-play">▶ 在抖音观看</span>
+        </div>
+      </a>
+      <a href="https://v.douyin.com/Xh2_tftl_E8/" target="_blank" rel="noopener" class="video-card">
+        <img src="images/gallery-3.webp" alt="肩颈理疗课程" class="video-thumb" loading="lazy">
+        <div class="video-info">
+          <h4>肩颈理疗 60分钟</h4>
+          <span class="vid-duration">课程编排</span>
+          <p>60分钟肩颈理疗课程编排参考，针对久坐低头族</p>
+          <span class="video-play">▶ 在抖音观看</span>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Philosophy ===== -->
+<section class="philosophy" id="philosophy">
+  <div class="section-inner">
+    <div class="section-header">
+      <span class="section-tag">PHILOSOPHY</span>
+      <h2 class="section-title">经营理念</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="philosophy-grid">
+      <div class="phil-item">
+        <div class="phil-num">1</div>
+        <div class="phil-text"><h4>不推销办卡</h4><p>你来，我用心带；你忙，我安静不打扰</p></div>
+      </div>
+      <div class="phil-item">
+        <div class="phil-num">2</div>
+        <div class="phil-text"><h4>不制造身材焦虑</h4><p>运动是治愈，不是压力。体态慢慢养</p></div>
+      </div>
+      <div class="phil-item">
+        <div class="phil-num">3</div>
+        <div class="phil-text"><h4>不内卷比价</h4><p>不催续费，不流水线套路，不拿价格当噱头</p></div>
+      </div>
+      <div class="phil-item">
+        <div class="phil-num">4</div>
+        <div class="phil-text"><h4>不群发打扰</h4><p>不强行捆绑，不群发骚扰，给你尊重与空间</p></div>
+      </div>
+      <div class="phil-item">
+        <div class="phil-num">5</div>
+        <div class="phil-text"><h4>精细化教学</h4><p>认真抠动作、调体态、做修复，细节不放过</p></div>
+      </div>
+      <div class="phil-item">
+        <div class="phil-num">6</div>
+        <div class="phil-text"><h4>三观同频才相伴</h4><p>只等懂生活、爱自己的同频姐妹慢慢修行</p></div>
+      </div>
+    </div>
+    <div class="philosophy-quote">
+      <blockquote>"守一间小馆，安一份初心。慢慢经营，静静发光。"</blockquote>
+      <cite>—— 唐唐</cite>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Music ===== -->
+<section class="music" id="music">
+  <div class="section-inner">
+    <div class="section-header">
+      <span class="section-tag">MUSIC</span>
+      <h2 class="section-title">推荐音乐</h2>
+      <div class="section-line"></div>
+      <p class="section-subtitle">视频中使用的背景音乐，适合瑜伽练习时聆听</p>
+    </div>
+    <div class="music-list">
+      <div class="music-item">
+        <div class="music-num">♪</div>
+        <div class="music-info">
+          <div class="song-name">A Sad Me In Your Eyes</div>
+          <div class="song-artist">昨夜派对 L.N Party</div>
+        </div>
+        <span class="music-tag">瑜伽专用</span>
+      </div>
+      <div class="music-item">
+        <div class="music-num">♪</div>
+        <div class="music-info">
+          <div class="song-name">Cold Flame 冷焰（剪辑版）</div>
+          <div class="song-artist">RANGE</div>
+        </div>
+        <span class="music-tag">静心冥想</span>
+      </div>
+      <div class="music-item">
+        <div class="music-num">♪</div>
+        <div class="music-info">
+          <div class="song-name">Memories（硬曲版）</div>
+          <div class="song-artist">Kerous、Klinn</div>
+        </div>
+        <span class="music-tag">拉伸放松</span>
+      </div>
+    </div>
+    <p class="music-note">🎵 以上音乐可在网易云音乐 / QQ音乐搜索收听</p>
+  </div>
+</section>
+
+<!-- ===== Contact ===== -->
+<section class="contact" id="contact">
+  <div class="section-inner">
+    <div class="section-header">
+      <span class="section-tag">CONTACT</span>
+      <h2 class="section-title">预约体验</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-info">
+        <span class="free-trial">✨ 首次到店免费体验一节</span>
+        <h3>来馆里坐坐</h3>
+        <p>📍 河南省南阳市卧龙区（具体地址微信咨询）</p>
+        <p>📱 微信号：待补充</p>
+        <p>🕐 营业时间：请提前微信预约</p>
+        <p style="margin-top: 20px; color: var(--text-light); line-height: 1.9;">
+          不需要马上决定，先来<strong style="color: var(--sage-dark);">免费体验</strong>一节<br>
+          觉得合适再续，不催不逼
+        </p>
+      </div>
+      <div class="contact-form">
+        <form id="contactForm">
+          <div class="form-group">
+            <label for="name">您的称呼 *</label>
+            <input type="text" id="name" name="name" placeholder="请输入您的名字" required>
+          </div>
+          <div class="form-group">
+            <label for="phone">手机号 / 微信号 *</label>
+            <input type="text" id="phone" name="phone" placeholder="方便我联系到您" required>
+          </div>
+          <div class="form-group">
+            <label for="interest">感兴趣的课程</label>
+            <select id="interest" name="interest">
+              <option value="">请选择</option>
+              <option value="私教一对一">私教一对一</option>
+              <option value="小班团课">小班团课</option>
+              <option value="扭转排毒">扭转排毒</option>
+              <option value="肩颈理疗">肩颈理疗</option>
+              <option value="普拉提">普拉提</option>
+              <option value="都想了解">都想了解</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="message">留言（选填）</label>
+            <textarea id="message" name="message" placeholder="有什么想提前了解的？"></textarea>
+          </div>
+          <button type="submit" class="form-submit">提交预约请求</button>
+          <p class="form-note">提交后馆主会通过微信联系您确认时间</p>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <p>唐唐YOGA · 南阳卧龙区一人一馆瑜伽工作室</p>
+  <p style="margin-top: 6px;">守一间小馆，安一份初心 &nbsp;|&nbsp; 不推销 · 不办卡 · 不制造焦虑</p>
+</footer>
+
+<script>
+(function() {
+  var toggle = document.getElementById('navToggle');
+  var links = document.getElementById('navLinks');
+
+  toggle.addEventListener('click', function() {
+    links.classList.toggle('active');
+    toggle.classList.toggle('active');
+    document.body.style.overflow = links.classList.contains('active') ? 'hidden' : '';
+  });
+
+  var navLinks = document.querySelectorAll('.nav-links a');
+  for (var i = 0; i < navLinks.length; i++) {
+    navLinks[i].addEventListener('click', function() {
+      links.classList.remove('active');
+      toggle.classList.remove('active');
+      document.body.style.overflow = '';
+    });
+  }
+
+  var nav = document.getElementById('nav');
+  var lastScroll = 0;
+  window.addEventListener('scroll', function() {
+    var y = window.pageYOffset;
+    nav.style.boxShadow = y > 10 ? '0 2px 24px rgba(61,50,38,0.08)' : 'none';
+    lastScroll = y;
+  }, { passive: true });
+
+  document.getElementById('contactForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    var btn = this.querySelector('.form-submit');
+    var original = btn.textContent;
+    btn.textContent = '已提交，馆主会尽快联系您 ✓';
+    btn.style.background = 'var(--sage-dark)';
+    btn.disabled = true;
+    var form = this;
+    setTimeout(function() {
+      btn.textContent = original;
+      btn.style.background = 'var(--sage)';
+      btn.disabled = false;
+      form.reset();
+    }, 4000);
+  });
+})();
+</script>
+</body>
+</html>
