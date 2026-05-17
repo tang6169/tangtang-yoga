@@ -892,6 +892,7 @@ section { padding: 80px 24px; position: relative; }
 <footer class="footer">
   <p>唐唐YOGA · 南阳卧龙区一人一馆瑜伽工作室</p>
   <p style="margin-top: 6px;">守一间小馆，安一份初心 &nbsp;|&nbsp; 不推销 · 不办卡 · 不制造焦虑</p>
+  <p style="margin-top: 10px; font-size: 0.7rem; opacity: 0.6;">背景歌曲：Happiness - Jay Someday (CC BY 3.0)</p>
 </footer>
 
 <!-- Music Player -->
@@ -899,9 +900,7 @@ section { padding: 80px 24px; position: relative; }
   <span class="music-label" id="musicLabel">🎵 音乐播放中</span>
   <button class="music-btn playing" id="musicBtn" aria-label="音乐控制" title="点击暂停 / 播放音乐">♪</button>
 </div>
-<audio id="bgMusic" preload="auto" loop>
-  <source src="bg-music.mp3" type="audio/mpeg">
-</audio>
+<audio id="bgMusic" preload="auto" loop src="bg-music.mp3"></audio>
 
 <script>
 (function() {
@@ -947,20 +946,24 @@ section { padding: 80px 24px; position: relative; }
     }, 4000);
   });
 
-  // Smart Auto-play Music
+  // Smart Auto-play Music Player
   var audio = document.getElementById('bgMusic');
   var musicBtn = document.getElementById('musicBtn');
   var musicLabel = document.getElementById('musicLabel');
+  var musicPlayer = document.getElementById('musicPlayer');
   var isPlaying = false;
-  var autoPlayTried = false;
+  var firstInteractionDone = false;
 
-  audio.volume = 0.45;
+  audio.src = 'bg-music.mp3';
   audio.loop = true;
+  audio.volume = 0.5;
+  audio.load();
 
-  function startMusic() {
+  function playAudio() {
     if (isPlaying) return;
     audio.play().then(function() {
       isPlaying = true;
+      firstInteractionDone = true;
       musicBtn.classList.add('playing');
       musicBtn.innerHTML = '♪';
       musicLabel.textContent = '🎵 音乐播放中';
@@ -968,54 +971,51 @@ section { padding: 80px 24px; position: relative; }
       setTimeout(function() {
         if (isPlaying) musicLabel.style.display = 'none';
       }, 3000);
-    }).catch(function() {
-      // Still blocked
+    }).catch(function(err) {
+      // Browser blocked auto-play - keep showing prompt
+      console.log('Auto-play blocked, waiting for interaction');
     });
   }
 
-  function pauseMusic() {
+  function pauseAudio() {
     audio.pause();
     isPlaying = false;
     musicBtn.classList.remove('playing');
     musicBtn.innerHTML = '♪';
-    musicLabel.textContent = '已暂停';
+    musicLabel.textContent = '已暂停 · 点击继续';
     musicLabel.style.display = 'block';
-    setTimeout(function() {
-      if (!isPlaying) musicLabel.style.display = 'none';
-    }, 2000);
   }
 
-  // Auto-play on FIRST user interaction anywhere on the page
-  function onFirstInteraction() {
+  // Try direct auto-play immediately (works for returning visitors)
+  playAudio();
+
+  // If blocked, play on ANY first interaction with the page
+  function handleFirstInteraction(e) {
     if (!isPlaying) {
-      startMusic();
+      playAudio();
     }
-    // Remove listeners after first successful interaction
-    document.removeEventListener('click', onFirstInteraction);
-    document.removeEventListener('touchstart', onFirstInteraction);
-    document.removeEventListener('scroll', onFirstInteraction);
-    document.removeEventListener('keydown', onFirstInteraction);
+    if (isPlaying) {
+      // Success - remove all listeners
+      document.removeEventListener('click', handleFirstInteraction);
+      document.removeEventListener('touchstart', handleFirstInteraction);
+      document.removeEventListener('scroll', handleFirstInteraction);
+      document.removeEventListener('keydown', handleFirstInteraction);
+    }
   }
 
-  document.addEventListener('click', onFirstInteraction);
-  document.addEventListener('touchstart', onFirstInteraction);
-  document.addEventListener('scroll', onFirstInteraction, { once: true });
-  document.addEventListener('keydown', onFirstInteraction);
+  document.addEventListener('click', handleFirstInteraction);
+  document.addEventListener('touchstart', handleFirstInteraction, { passive: true });
+  document.addEventListener('scroll', handleFirstInteraction, { passive: true });
+  document.addEventListener('keydown', handleFirstInteraction);
 
-  // Also try direct auto-play (works if user has visited before)
-  setTimeout(function() {
-    if (!isPlaying) {
-      startMusic();
-    }
-  }, 500);
-
-  // Button click = toggle
+  // Button: toggle play/pause
   musicBtn.addEventListener('click', function(e) {
-    e.stopPropagation(); // Don't trigger the document click auto-play
+    e.stopPropagation();
+    e.preventDefault();
     if (!isPlaying) {
-      startMusic();
+      playAudio();
     } else {
-      pauseMusic();
+      pauseAudio();
     }
   });
 })();
