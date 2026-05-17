@@ -494,21 +494,33 @@ section { padding: 80px 24px; position: relative; }
 }
 /* ===== Music Player ===== */
 .music-player {
-  position: fixed; bottom: 28px; right: 28px; z-index: 999;
-  display: flex; align-items: center; gap: 12px;
+  position: fixed; bottom: 24px; right: 24px; z-index: 9999;
+  display: flex; align-items: center; gap: 10px;
 }
 .music-btn {
-  width: 52px; height: 52px; border-radius: 50%;
-  background: var(--sage); color: white; border: none;
-  cursor: pointer; font-size: 1.3rem; display: flex;
+  width: 56px; height: 56px; border-radius: 50%;
+  background: var(--white); color: var(--sage-dark);
+  border: 2px solid var(--sage); cursor: pointer;
+  font-size: 1.4rem; display: flex;
   align-items: center; justify-content: center;
-  transition: all 0.35s; box-shadow: 0 6px 24px rgba(107,138,107,0.3);
-  position: relative;
+  transition: all 0.35s; box-shadow: 0 4px 20px rgba(61,50,38,0.18);
+  position: relative; user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  animation: btnGlow 3s ease-in-out infinite;
 }
-.music-btn:hover { background: var(--sage-dark); transform: scale(1.08); }
-.music-btn.playing { background: var(--earth); box-shadow: 0 6px 28px rgba(196,168,130,0.4); }
+@keyframes btnGlow {
+  0%, 100% { box-shadow: 0 4px 20px rgba(61,50,38,0.18); }
+  50% { box-shadow: 0 4px 28px rgba(107,138,107,0.35); }
+}
+.music-btn:hover { background: var(--sage); color: white; transform: scale(1.1); }
+.music-btn.playing {
+  background: var(--earth);
+  color: white; border-color: var(--earth);
+  box-shadow: 0 4px 24px rgba(196,168,130,0.45);
+  animation: none;
+}
 .music-btn.playing::after {
-  content: ""; position: absolute; inset: -6px; border-radius: 50%;
+  content: ""; position: absolute; inset: -8px; border-radius: 50%;
   border: 2px solid rgba(196,168,130,0.4);
   animation: musicPulse 2s ease-in-out infinite;
 }
@@ -518,9 +530,10 @@ section { padding: 80px 24px; position: relative; }
 }
 .music-label {
   font-size: 0.8rem; color: var(--text-light);
-  background: var(--white); padding: 8px 16px;
-  border-radius: 100px; box-shadow: 0 2px 12px rgba(61,50,38,0.08);
+  background: var(--white); padding: 9px 18px;
+  border-radius: 100px; box-shadow: 0 2px 14px rgba(61,50,38,0.1);
   white-space: nowrap; pointer-events: none;
+  border: 1px solid var(--stone);
 }
 </style>
 </head>
