@@ -946,106 +946,81 @@ section { padding: 80px 24px; position: relative; }
     }, 4000);
   });
 
-  // Music Player - plays on first user interaction
+  // Music Player
   var audio = document.getElementById('bgMusic');
   var musicBtn = document.getElementById('musicBtn');
   var musicLabel = document.getElementById('musicLabel');
   var isPlaying = false;
-  var tried = false;
 
   audio.volume = 0.5;
   audio.loop = true;
-  audio.load();
 
-  function setPlaying() {
-    isPlaying = true;
-    musicBtn.classList.add('playing');
-    musicBtn.textContent = '♪';
-    musicLabel.textContent = '🎵 音乐播放中';
+  function updateUI(playing) {
+    isPlaying = playing;
+    if (playing) {
+      musicBtn.classList.add('playing');
+      musicBtn.textContent = '♪';
+      musicLabel.textContent = '🎵 音乐播放中';
+    } else {
+      musicBtn.classList.remove('playing');
+      musicBtn.textContent = '▶';
+      musicLabel.textContent = '已暂停 · 点击继续';
+    }
     musicLabel.style.display = 'block';
-    setTimeout(function() {
-      if (isPlaying) musicLabel.style.display = 'none';
-    }, 3000);
+    if (playing) {
+      setTimeout(function() {
+        if (isPlaying) musicLabel.style.display = 'none';
+      }, 3000);
+    }
   }
 
-  function setPaused() {
-    isPlaying = false;
-    musicBtn.classList.remove('playing');
-    musicBtn.textContent = '▶';
-    musicLabel.textContent = '已暂停 · 点击继续';
-    musicLabel.style.display = 'block';
-  }
-
-  function tryPlay() {
+  function doPlay() {
     if (isPlaying) return;
-    tried = true;
-    // Some browsers need the play() call inside the same event tick
-    var p = audio.play();
-    if (p !== undefined) {
-      p.then(function() {
-        setPlaying();
-      }).catch(function() {
-        // Still blocked, keep waiting for interaction
-        tried = false;
-      });
+    try {
+      var p = audio.play();
+      if (p && typeof p.then === 'function') {
+        p.then(function() { updateUI(true); })
+         .catch(function() { /* blocked by browser */ });
+      } else {
+        // Older browsers that don't return a promise from play()
+        updateUI(true);
+      }
+    } catch(e) {
+      // Some browsers throw synchronously
     }
   }
 
-  function tryPlayNow() {
-    // Force-load and play synchronously for mobile Safari
-    audio.load();
-    var p = audio.play();
-    if (p !== undefined) {
-      p.then(function() {
-        if (!isPlaying) setPlaying();
-      }).catch(function() {});
-    }
-  }
-
-  // Listen for first user interaction on the whole document
-  function onFirstTouch(e) {
-    if (!isPlaying) tryPlayNow();
-  }
-
-  function onFirstClick(e) {
-    if (!isPlaying) tryPlayNow();
-  }
-
-  document.addEventListener('touchstart', onFirstTouch, { once: false, passive: true });
-  document.addEventListener('touchend', onFirstTouch, { once: false, passive: true });
-  document.addEventListener('click', onFirstClick, { once: false });
-  document.addEventListener('keydown', onFirstClick, { once: false });
-
-  // Also try on scroll
-  var scrollTried = false;
-  window.addEventListener('scroll', function() {
-    if (!isPlaying && !scrollTried) {
-      scrollTried = true;
-      tryPlayNow();
-    }
+  // First user interaction anywhere on page → start playing
+  document.addEventListener('click', function(e) {
+    if (!isPlaying) doPlay();
+  });
+  document.addEventListener('touchstart', function(e) {
+    if (!isPlaying) doPlay();
   }, { passive: true });
+  document.addEventListener('keydown', function(e) {
+    if (!isPlaying) doPlay();
+  });
 
-  // Button: toggle play/pause
+  // Music button: toggle
   musicBtn.addEventListener('click', function(e) {
     e.stopPropagation();
     e.preventDefault();
     if (isPlaying) {
       audio.pause();
-      setPaused();
+      updateUI(false);
     } else {
-      tryPlayNow();
+      doPlay();
     }
   });
 
-  // Button: touch on mobile
   musicBtn.addEventListener('touchend', function(e) {
     e.stopPropagation();
     e.preventDefault();
     if (isPlaying) {
       audio.pause();
-      setPaused();
+      updateUI(false);
     } else {
-      tryPlayNow();
+      doPlay();
     }
   });
 })();
