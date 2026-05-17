@@ -66,7 +66,7 @@ img { max-width: 100%; height: auto; display: block; }
   text-decoration: none; letter-spacing: 0.04em; z-index: 1002;
   display: flex; align-items: center; gap: 8px;
 }
-.nav-logo-icon { flex-shrink: 0; }
+.nav-logo-icon { flex-shrink: 0; display: block; width: 32px; height: 32px; }
 .nav-links { display: flex; list-style: none; gap: 28px; }
 .nav-links a {
   text-decoration: none; color: var(--text-light); font-size: 0.9rem;
@@ -546,15 +546,7 @@ section { padding: 80px 24px; position: relative; }
 <nav class="nav" id="nav">
   <div class="nav-inner">
     <a href="#home" class="nav-logo">
-      <svg class="nav-logo-icon" width="32" height="32" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="50" cy="50" r="46" fill="#FDF8F0" stroke="#9BAF90" stroke-width="4"/>
-        <circle cx="50" cy="20" r="17" fill="#9BAF90"/>
-        <circle cx="22" cy="42" r="17" fill="#9BAF90"/>
-        <circle cx="78" cy="42" r="17" fill="#9BAF90"/>
-        <circle cx="28" cy="72" r="17" fill="#9BAF90"/>
-        <circle cx="72" cy="72" r="17" fill="#9BAF90"/>
-        <circle cx="50" cy="50" r="12" fill="#C4A882"/>
-      </svg>
+      <img class="nav-logo-icon" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='46' fill='%23FDF8F0' stroke='%239BAF90' stroke-width='4'/%3E%3Ccircle cx='50' cy='20' r='17' fill='%239BAF90'/%3E%3Ccircle cx='22' cy='42' r='17' fill='%239BAF90'/%3E%3Ccircle cx='78' cy='42' r='17' fill='%239BAF90'/%3E%3Ccircle cx='28' cy='72' r='17' fill='%239BAF90'/%3E%3Ccircle cx='72' cy='72' r='17' fill='%239BAF90'/%3E%3Ccircle cx='50' cy='50' r='12' fill='%23C4A882'/%3E%3C/svg%3E" alt="唐唐YOGA" width="32" height="32">
       唐唐YOGA
     </a>
     <button class="nav-toggle" id="navToggle" aria-label="菜单">
