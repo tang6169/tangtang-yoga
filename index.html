@@ -896,12 +896,9 @@ section { padding: 80px 24px; position: relative; }
 
 <!-- Music Player -->
 <div class="music-player" id="musicPlayer">
-  <span class="music-label" id="musicLabel">🎵 欢快瑜伽音乐</span>
-  <button class="music-btn" id="musicBtn" aria-label="播放背景音乐" title="点击播放">▶</button>
+  <span class="music-label" id="musicLabel">🎵 点击播放音乐</span>
+  <button class="music-btn" id="musicBtn" aria-label="播放背景音乐" title="点击播放 / 双击切换歌曲">♪</button>
 </div>
-<audio id="bgMusic" preload="auto" loop>
-  <source src="music-upbeat.mp3" type="audio/mpeg">
-</audio>
 
 <script>
 (function() {
@@ -947,46 +944,114 @@ section { padding: 80px 24px; position: relative; }
     }, 4000);
   });
 
-  // Music Player
-  var audio = document.getElementById('bgMusic');
+  // Clean Melody Music Player
+  var audioCtx = null;
   var musicBtn = document.getElementById('musicBtn');
   var musicLabel = document.getElementById('musicLabel');
   var isPlaying = false;
+  var playTimer = null;
+  var masterGain = null;
   var lastClick = 0;
+  var trackIdx = 0;
 
-  var tracks = [
-    { file: 'music-upbeat.mp3', label: '🎵 欢快瑜伽音乐' },
-    { file: 'music-yoga.mp3', label: '🧘 舒缓冥想音乐' }
-  ];
-  var idx = 0;
+  // Cheerful pentatonic melody (notes in Hz) - sounds like gentle wind chimes
+  var melodyNotes = [523, 587, 659, 784, 880, 1047, 880, 784, 659, 587, 523, 659, 784, 880, 1047, 1175];
+  // Calm meditation notes
+  var calmNotes = [262, 330, 392, 440, 523, 440, 392, 330, 262, 294, 349, 440, 523, 440, 349, 294];
+  var trackNotes = [melodyNotes, calmNotes];
+  var trackLabels = ['🎵 欢快旋律', '🧘 舒缓旋律'];
+
+  function playNote(ctx, freq, startTime, duration, volume) {
+    var osc = ctx.createOscillator();
+    var gain = ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.value = freq;
+
+    // Smooth envelope: fast attack, gentle decay - no clicks
+    var now = startTime;
+    gain.gain.setValueAtTime(0, now);
+    gain.gain.linearRampToValueAtTime(volume, now + 0.02);
+    gain.gain.linearRampToValueAtTime(volume * 0.7, now + duration * 0.4);
+    gain.gain.linearRampToValueAtTime(0, now + duration);
+
+    // Add a soft harmonic for warmth
+    var osc2 = ctx.createOscillator();
+    var gain2 = ctx.createGain();
+    osc2.type = 'sine';
+    osc2.frequency.value = freq * 2;
+    gain2.gain.setValueAtTime(0, now);
+    gain2.gain.linearRampToValueAtTime(volume * 0.15, now + 0.02);
+    gain2.gain.linearRampToValueAtTime(0, now + duration);
+
+    osc.connect(gain);
+    gain.connect(masterGain);
+    osc2.connect(gain2);
+    gain2.connect(masterGain);
+    osc.start(now);
+    osc.stop(now + duration);
+    osc2.start(now);
+    osc2.stop(now + duration);
+  }
+
+  function startMelody() {
+    if (audioCtx) { stopMelody(); }
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    masterGain = audioCtx.createGain();
+    masterGain.gain.value = 0.5;
+    masterGain.connect(audioCtx.destination);
+
+    var notes = trackNotes[trackIdx];
+    var noteDuration = 0.8;
+    var now = audioCtx.currentTime;
+
+    for (var i = 0; i < notes.length; i++) {
+      playNote(audioCtx, notes[i], now + i * noteDuration, noteDuration * 0.9, 0.18);
+    }
+
+    // Loop: replay after all notes finish
+    var loopLength = notes.length * noteDuration;
+    playTimer = setInterval(function() {
+      if (!audioCtx) return;
+      var t = audioCtx.currentTime;
+      for (var i = 0; i < notes.length; i++) {
+        playNote(audioCtx, notes[i], t + i * noteDuration, noteDuration * 0.9, 0.18);
+      }
+    }, loopLength * 1000);
+  }
+
+  function stopMelody() {
+    if (playTimer) { clearInterval(playTimer); playTimer = null; }
+    if (audioCtx) {
+      audioCtx.close().catch(function(){});
+      audioCtx = null;
+    }
+    masterGain = null;
+  }
 
   musicBtn.addEventListener('click', function() {
     var now = Date.now();
-    // Double-click = switch track
     if (now - lastClick < 400) {
-      idx = (idx + 1) % tracks.length;
-      audio.src = tracks[idx].file;
-      audio.load();
-      if (isPlaying) { audio.play(); }
-      musicLabel.textContent = tracks[idx].label;
+      // Double-click: switch melody
+      stopMelody();
+      trackIdx = (trackIdx + 1) % trackNotes.length;
+      if (isPlaying) {
+        startMelody();
+        musicLabel.textContent = trackLabels[trackIdx];
+      }
       lastClick = 0;
       return;
     }
     lastClick = now;
 
-    // Single click = play/pause toggle
     if (!isPlaying) {
-      audio.src = tracks[idx].file;
-      audio.load();
-      audio.play().then(function() {
-        isPlaying = true;
-        musicBtn.classList.add('playing');
-        musicBtn.innerHTML = '⏸';
-        musicLabel.textContent = tracks[idx].label;
-        musicLabel.style.display = 'block';
-      });
+      startMelody();
+      isPlaying = true;
+      musicBtn.classList.add('playing');
+      musicBtn.innerHTML = '⏸';
+      musicLabel.textContent = trackLabels[trackIdx];
+      musicLabel.style.display = 'block';
     } else {
-      audio.pause();
+      stopMelody();
       isPlaying = false;
       musicBtn.classList.remove('playing');
       musicBtn.innerHTML = '▶';
