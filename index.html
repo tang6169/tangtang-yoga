@@ -896,9 +896,12 @@ section { padding: 80px 24px; position: relative; }
 
 <!-- Music Player -->
 <div class="music-player" id="musicPlayer">
-  <span class="music-label" id="musicLabel">🎵 轻音乐播放中</span>
-  <button class="music-btn" id="musicBtn" aria-label="播放背景音乐" title="点击播放瑜伽音乐">♪</button>
+  <span class="music-label" id="musicLabel">🎵 欢快瑜伽音乐</span>
+  <button class="music-btn" id="musicBtn" aria-label="播放背景音乐" title="点击播放">▶</button>
 </div>
+<audio id="bgMusic" preload="auto" loop>
+  <source src="music-upbeat.mp3" type="audio/mpeg">
+</audio>
 
 <script>
 (function() {
@@ -944,72 +947,50 @@ section { padding: 80px 24px; position: relative; }
     }, 4000);
   });
 
-  // Ambient Music Player
-  var audioCtx = null;
-  var oscillators = [];
-  var gains = [];
-  var isPlaying = false;
+  // Music Player
+  var audio = document.getElementById('bgMusic');
   var musicBtn = document.getElementById('musicBtn');
   var musicLabel = document.getElementById('musicLabel');
+  var isPlaying = false;
+  var lastClick = 0;
 
-  // Create soothing ambient drone using Web Audio API
-  function startAmbient() {
-    if (audioCtx) return;
-    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-
-    // Soothing frequencies (Solfeggio-inspired)
-    var freqs = [174, 285, 396, 417, 528];
-    var masterGain = audioCtx.createGain();
-    masterGain.gain.value = 0;
-    masterGain.connect(audioCtx.destination);
-
-    for (var i = 0; i < freqs.length; i++) {
-      var osc = audioCtx.createOscillator();
-      var gain = audioCtx.createGain();
-      osc.type = 'sine';
-      osc.frequency.value = freqs[i];
-      gain.gain.value = 0.03 + Math.random() * 0.02;
-      // Gentle frequency modulation
-      var lfo = audioCtx.createOscillator();
-      var lfoGain = audioCtx.createGain();
-      lfo.frequency.value = 0.1 + Math.random() * 0.3;
-      lfoGain.gain.value = 1.5;
-      lfo.connect(lfoGain);
-      lfoGain.connect(osc.frequency);
-      lfo.start();
-      osc.connect(gain);
-      gain.connect(masterGain);
-      osc.start();
-      oscillators.push({ osc: osc, lfo: lfo });
-      gains.push(gain);
-    }
-
-    // Fade in
-    masterGain.gain.setTargetAtTime(0.06, audioCtx.currentTime, 2);
-    return masterGain;
-  }
-
-  var masterGain = null;
+  var tracks = [
+    { file: 'music-upbeat.mp3', label: '🎵 欢快瑜伽音乐' },
+    { file: 'music-yoga.mp3', label: '🧘 舒缓冥想音乐' }
+  ];
+  var idx = 0;
 
   musicBtn.addEventListener('click', function() {
+    var now = Date.now();
+    // Double-click = switch track
+    if (now - lastClick < 400) {
+      idx = (idx + 1) % tracks.length;
+      audio.src = tracks[idx].file;
+      audio.load();
+      if (isPlaying) { audio.play(); }
+      musicLabel.textContent = tracks[idx].label;
+      lastClick = 0;
+      return;
+    }
+    lastClick = now;
+
+    // Single click = play/pause toggle
     if (!isPlaying) {
-      masterGain = startAmbient();
-      musicBtn.classList.add('playing');
-      musicBtn.innerHTML = '⏸';
-      musicLabel.style.display = 'block';
-      isPlaying = true;
+      audio.src = tracks[idx].file;
+      audio.load();
+      audio.play().then(function() {
+        isPlaying = true;
+        musicBtn.classList.add('playing');
+        musicBtn.innerHTML = '⏸';
+        musicLabel.textContent = tracks[idx].label;
+        musicLabel.style.display = 'block';
+      });
     } else {
-      if (masterGain) {
-        masterGain.gain.setTargetAtTime(0, audioCtx.currentTime, 1.5);
-        setTimeout(function() {
-          if (audioCtx) { audioCtx.close(); audioCtx = null; }
-          oscillators = []; gains = []; masterGain = null;
-        }, 2000);
-      }
-      musicBtn.classList.remove('playing');
-      musicBtn.innerHTML = '♪';
-      musicLabel.style.display = 'none';
+      audio.pause();
       isPlaying = false;
+      musicBtn.classList.remove('playing');
+      musicBtn.innerHTML = '▶';
+      musicLabel.style.display = 'none';
     }
   });
 })();
