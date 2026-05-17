@@ -947,53 +947,75 @@ section { padding: 80px 24px; position: relative; }
     }, 4000);
   });
 
-  // Auto-play Music Player
+  // Smart Auto-play Music
   var audio = document.getElementById('bgMusic');
   var musicBtn = document.getElementById('musicBtn');
   var musicLabel = document.getElementById('musicLabel');
   var isPlaying = false;
+  var autoPlayTried = false;
 
-  function playMusic() {
+  audio.volume = 0.45;
+  audio.loop = true;
+
+  function startMusic() {
+    if (isPlaying) return;
     audio.play().then(function() {
       isPlaying = true;
       musicBtn.classList.add('playing');
       musicBtn.innerHTML = '♪';
       musicLabel.textContent = '🎵 音乐播放中';
       musicLabel.style.display = 'block';
-    }).catch(function() {
-      // Auto-play blocked by browser
-      isPlaying = false;
-      musicBtn.classList.remove('playing');
-      musicBtn.innerHTML = '♪';
-      musicLabel.textContent = '👆 点击开启音乐';
-      musicLabel.style.display = 'block';
-      // Show label for 5 seconds then fade
       setTimeout(function() {
-        if (!isPlaying) {
-          musicLabel.style.display = 'none';
-        }
-      }, 6000);
+        if (isPlaying) musicLabel.style.display = 'none';
+      }, 3000);
+    }).catch(function() {
+      // Still blocked
     });
   }
 
-  // Try auto-play on page load
-  audio.volume = 0.5;
-  playMusic();
+  function pauseMusic() {
+    audio.pause();
+    isPlaying = false;
+    musicBtn.classList.remove('playing');
+    musicBtn.innerHTML = '♪';
+    musicLabel.textContent = '已暂停';
+    musicLabel.style.display = 'block';
+    setTimeout(function() {
+      if (!isPlaying) musicLabel.style.display = 'none';
+    }, 2000);
+  }
 
-  // Click to toggle play/pause
-  musicBtn.addEventListener('click', function() {
+  // Auto-play on FIRST user interaction anywhere on the page
+  function onFirstInteraction() {
     if (!isPlaying) {
-      playMusic();
+      startMusic();
+    }
+    // Remove listeners after first successful interaction
+    document.removeEventListener('click', onFirstInteraction);
+    document.removeEventListener('touchstart', onFirstInteraction);
+    document.removeEventListener('scroll', onFirstInteraction);
+    document.removeEventListener('keydown', onFirstInteraction);
+  }
+
+  document.addEventListener('click', onFirstInteraction);
+  document.addEventListener('touchstart', onFirstInteraction);
+  document.addEventListener('scroll', onFirstInteraction, { once: true });
+  document.addEventListener('keydown', onFirstInteraction);
+
+  // Also try direct auto-play (works if user has visited before)
+  setTimeout(function() {
+    if (!isPlaying) {
+      startMusic();
+    }
+  }, 500);
+
+  // Button click = toggle
+  musicBtn.addEventListener('click', function(e) {
+    e.stopPropagation(); // Don't trigger the document click auto-play
+    if (!isPlaying) {
+      startMusic();
     } else {
-      audio.pause();
-      isPlaying = false;
-      musicBtn.classList.remove('playing');
-      musicBtn.innerHTML = '♪';
-      musicLabel.textContent = '已暂停';
-      musicLabel.style.display = 'block';
-      setTimeout(function() {
-        if (!isPlaying) musicLabel.style.display = 'none';
-      }, 2000);
+      pauseMusic();
     }
   });
 })();
